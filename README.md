@@ -1,6 +1,21 @@
 | Supported Targets | ESP32-S2 | ESP32-S3 |
 | ----------------- | -------- | -------- |
 
+# Haxxboard
+
+## Troubleshooting
+
+### UART BROKEN
+
+If you accidentally programmed the UART pins use the following key combination to enter the flash mode via USB:
+
+- Hold down the BOOT button
+- Press and release the RST button
+- Release the BOOT button
+
+Then flash.
+
+
 # TinyUSB Human Interface Device Example
 
 (See the README.md file in the upper level 'examples' directory for more information about examples.)

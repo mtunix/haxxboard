@@ -1,2 +1,4 @@
 esp-idf
 cmake-build-debug
+build
+managed_components

@@ -2,3 +2,4 @@
 # Espressif IoT Development Framework (ESP-IDF) Project Minimal Configuration
 #
 CONFIG_TINYUSB_HID_COUNT=1
+CONFIG_IDF_TARGET="esp32s3"
