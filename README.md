@@ -1,7 +1,16 @@
-| Supported Targets | ESP32-S2 | ESP32-S3 |
-| ----------------- | -------- | -------- |
-
 # Haxxboard
+
+Keyboard and mouse firmware from hackers for hackers with <3
+
+| Supported Targets |  ESP32-S2  |  ESP32-S3  |
+|-------------------|:----------:|:----------:|
+|                   |            |     x      |  
+
+## References
+
+![Pinout DevKit M1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/_images/ESP32-S3_DevKitM-1_pinlayout.jpg)
+[Schematics DevKit M1](https://dl.espressif.com/dl/schematics/SCH_ESP32-S3-DEVKITM-1_V1_20210310A.pdf)
+[Technical Reference DevKit M1](https://www.espressif.com/sites/default/files/documentation/esp32-s3_technical_reference_manual_en.pdf#bootctrl)
 
 ## Troubleshooting
 
@@ -16,9 +25,8 @@ If you accidentally programmed the UART pins use the following key combination t
 Then flash.
 
 
-# TinyUSB Human Interface Device Example
 
-(See the README.md file in the upper level 'examples' directory for more information about examples.)
+# TinyUSB Human Interface Device Example
 
 Human interface devices (HID) are one of the most common USB devices, it is implemented in various devices such as keyboards, mice, game controllers, sensors and alphanumeric display devices.
 In this example, we implement USB keyboard and mouse.
