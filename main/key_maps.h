@@ -63,8 +63,37 @@ uint8_t keycode_map_left_fn[49] = {
     HID_KEY_F4,
     HID_KEY_F5,
     HID_KEY_F6,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    HID_KEY_NONE,
+    0, // 19
+    0, // 20
+    HID_KEY_NONE,
+    0, // 22
+    0, // 23
+    0, // 24
+    0, // 25
+    HID_KEY_NONE,
+    0, // 27
+    0, // 28
+    0, // 29
+    0, // 30
+    0, // 31
+    0, // 32
+    HID_KEY_NONE,
+    HID_KEY_CAPS_LOCK,
 };
 
 uint8_t *keycode_map = keycode_map_left;
+uint8_t *keycode_map_fn = keycode_map_left_fn;
 
 #endif //KEY_MAPS_H
