@@ -1,5 +1,4 @@
-#ifndef KEY_MAPS_H
-#define KEY_MAPS_H
+#pragma once
 #include <stdint.h>
 #include <class/hid/hid.h>
 
@@ -95,5 +94,3 @@ uint8_t keycode_map_left_fn[49] = {
 
 uint8_t *keycode_map = keycode_map_left;
 uint8_t *keycode_map_fn = keycode_map_left_fn;
-
-#endif //KEY_MAPS_H
