@@ -4,11 +4,11 @@
 #include <led_strip.h>
 #include <led_strip_rmt.h>
 #include <led_strip_types.h>
-#include <util.h>
-#include <driver/gpio.h>
 #include <soc/clk_tree_defs.h>
 
 inline led_strip_handle_t led_strip;
+
+
 
 inline led_strip_config_t strip_config = {
     .strip_gpio_num = 48,

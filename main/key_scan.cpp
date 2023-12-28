@@ -1,5 +1,7 @@
+#include <esp_log.h>
 #include <class/hid/hid_device.h>
 #include <driver/gpio.h>
+#include <key_maps.h>
 
 uint8_t is_invalid_gpio(uint8_t gpio) {
     return gpio == 19 // USB
@@ -29,21 +31,35 @@ void init_gpios() {
     }
 }
 
-void send_pressed_keys(const uint8_t *keycode_map, const uint8_t *key_state) {
-    uint8_t pressed_keys[6] = {};
+void send_pressed_keys() {
+    std::array<uint8_t, 6> pressed_keys{};
     uint8_t pressed_keys_count = 0;
 
-    for (int i = 0; i < 49; i++) {
+    int fn_key_state = gpio_get_level(FN_KEY_GPIO_NUM);
+
+    ESP_LOGI("send_pressed_keys", "Scanning keys =======");
+
+    for(auto && [gpio_num, hid_key]: key_map) {
+        ESP_LOGI("send_pressed_keys", "Scan loop");
         if (pressed_keys_count >= 6) break;
 
-        if (key_state[i]) {
-            pressed_keys[pressed_keys_count] = keycode_map[i];
+        if (!gpio_get_level(gpio_num)) {
+
+            ESP_LOGI("send_pressed_keys", "Found a key!");
+            pressed_keys[pressed_keys_count] = hid_key[fn_key_state];
             ++pressed_keys_count;
         }
     }
 
-    if (pressed_keys_count > 0)
-        tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, pressed_keys);
-    else
+    if (pressed_keys_count > 0) {
+        tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, pressed_keys.data());
+
+        ESP_LOGI("send_pressed_keys", "Sending some keys");
+    }
+    else {
         tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, nullptr);
+
+        ESP_LOGI("send_pressed_keys", "sending no keys");
+    }
+
 }

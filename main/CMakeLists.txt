@@ -1,5 +1,5 @@
 idf_component_register(
-    SRCS "haxxboard.cpp" "util.cpp" "usb.cpp"
+    SRCS "haxxboard.cpp" "key_scan.cpp" "usb.cpp"
     INCLUDE_DIRS "."
     PRIV_REQUIRES driver
     )
