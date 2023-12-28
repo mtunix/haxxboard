@@ -11,6 +11,7 @@
 #include "tinyusb.h"
 #include "class/hid/hid_device.h"
 #include "driver/gpio.h"
+#include "util.h"
 
 #define APP_BUTTON (GPIO_NUM_0) // Use BOOT signal by default
 static const char *TAG = "example";
@@ -168,8 +169,20 @@ uint8_t keycode_map[49] = {
     HID_KEY_Q,
     HID_KEY_R,
     HID_KEY_S,
+    0, // 19
+    0, // 20
     HID_KEY_T,
+    0, // 22
+    0, // 23
+    0, // 24
+    0, // 25
     HID_KEY_U,
+    0, // 27
+    0, // 28
+    0, // 29
+    0, // 30
+    0, // 31
+    0, // 32
     HID_KEY_V,
     HID_KEY_W,
     HID_KEY_X,
@@ -180,57 +193,15 @@ uint8_t keycode_map[49] = {
     HID_KEY_3,
     HID_KEY_4,
     HID_KEY_5,
+    0, // 43
+    0, // 44
     HID_KEY_6,
     HID_KEY_7,
     HID_KEY_8,
-    HID_KEY_9,
-    HID_KEY_0,
+    HID_KEY_9
 };
 
 uint8_t key_state[49] = {};
-
-uint8_t is_invalid_gpio(uint8_t gpio) {
-    return gpio == 19
-           || gpio == 20
-           || (gpio >= 22 && gpio <= 25)
-           || (gpio >= 27 && gpio <= 32)
-           || gpio == 43
-           || gpio == 44;
-}
-
-void init_gpios() {
-    for (int i = 0; i < 49; i++) {
-        if (is_invalid_gpio(i)) continue;
-
-        gpio_config_t gpio_cfg = {
-            .pin_bit_mask = BIT64(i),
-            .mode = GPIO_MODE_INPUT,
-            .intr_type = GPIO_INTR_DISABLE,
-            .pull_up_en = true,
-            .pull_down_en = false,
-        };
-        ESP_ERROR_CHECK(gpio_config(&gpio_cfg));
-    }
-}
-
-void send_pressed_keys(void) {
-    uint8_t pressed_keys[6] = {};
-    uint8_t pressed_keys_count = 0;
-
-    for (int i = 0; i < 49; i++) {
-        if (pressed_keys_count >= 6) break;
-
-        if (key_state[i]) {
-            pressed_keys[pressed_keys_count] = keycode_map[i];
-            ++pressed_keys_count;
-        }
-    }
-
-    if (pressed_keys_count > 0)
-        tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, pressed_keys);
-    else
-        tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, NULL);
-}
 
 void app_main(void) {
     init_gpios();
@@ -252,7 +223,8 @@ void app_main(void) {
             for (int i = 0; i < 49; i++) {
                 key_state[i] = !gpio_get_level(i);
             }
-            send_pressed_keys();
+
+            send_pressed_keys(keycode_map, key_state);
             vTaskDelay(pdMS_TO_TICKS(100));
         }
     }

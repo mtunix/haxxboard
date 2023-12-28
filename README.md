@@ -9,7 +9,9 @@ Keyboard and mouse firmware from hackers for hackers with <3
 ## References
 
 ![Pinout DevKit M1](https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/_images/ESP32-S3_DevKitM-1_pinlayout.jpg)
+
 [Schematics DevKit M1](https://dl.espressif.com/dl/schematics/SCH_ESP32-S3-DEVKITM-1_V1_20210310A.pdf)
+
 [Technical Reference DevKit M1](https://www.espressif.com/sites/default/files/documentation/esp32-s3_technical_reference_manual_en.pdf#bootctrl)
 
 ## Troubleshooting
