@@ -17,9 +17,9 @@ void init_gpios() {
         gpio_config_t gpio_cfg = {
             .pin_bit_mask = BIT64(i),
             .mode = GPIO_MODE_INPUT,
+            .pull_up_en = GPIO_PULLUP_ENABLE,
+            .pull_down_en = GPIO_PULLDOWN_DISABLE,
             .intr_type = GPIO_INTR_DISABLE,
-            .pull_up_en = true,
-            .pull_down_en = false,
         };
         ESP_ERROR_CHECK(gpio_config(&gpio_cfg));
     }

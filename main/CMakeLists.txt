@@ -1,5 +1,7 @@
 idf_component_register(
-    SRCS "haxxboard.c" "util.c" "util.h" "key_maps.h"
+    SRCS "haxxboard.cpp" "util.cpp"
     INCLUDE_DIRS "."
     PRIV_REQUIRES driver
     )
+
+

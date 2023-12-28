@@ -58,6 +58,7 @@ void tud_hid_set_report_cb(uint8_t instance, uint8_t report_id, hid_report_type_
                            uint16_t bufsize) {
 }
 
+
 typedef enum {
     MOUSE_DIR_RIGHT,
     MOUSE_DIR_DOWN,
@@ -68,7 +69,7 @@ typedef enum {
 
 #define DISTANCE_MAX        125
 #define DELTA_SCALAR        5
-
+/*
 static void mouse_draw_square_next_delta(int8_t *delta_x_ret, int8_t *delta_y_ret) {
     static mouse_dir_t cur_dir = MOUSE_DIR_RIGHT;
     static uint32_t distance = 0;
@@ -100,6 +101,7 @@ static void mouse_draw_square_next_delta(int8_t *delta_x_ret, int8_t *delta_y_re
     }
 }
 
+
 static void app_send_hid_demo(void) {
     // Keyboard output: Send key 'a/A' pressed and released
     ESP_LOGI(TAG, "Sending Keyboard report");
@@ -119,10 +121,11 @@ static void app_send_hid_demo(void) {
         vTaskDelay(pdMS_TO_TICKS(20));
     }
 }
+*/
 
 uint8_t key_state[49] = {};
 
-void app_main(void) {
+extern "C" void app_main(void) {
     init_gpios();
 
     ESP_LOGI(TAG, "USB initialization");
@@ -140,7 +143,7 @@ void app_main(void) {
     while (1) {
         if (tud_mounted()) {
             for (int i = 0; i < 49; i++) {
-                key_state[i] = !gpio_get_level(i);
+                key_state[i] = !gpio_get_level((gpio_num_t)i);
             }
 
             send_pressed_keys(keycode_map, key_state);
