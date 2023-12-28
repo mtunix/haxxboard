@@ -18,25 +18,26 @@ uint8_t keycode_map_left[49] = {
     HID_KEY_T,
     HID_KEY_A,
     HID_KEY_S,
+    HID_KEY_D,
     HID_KEY_F,
     HID_KEY_G,
     HID_KEY_Z,
     HID_KEY_X,
-    HID_KEY_C,
     0, // 19
     0, // 20
-    HID_KEY_V,
+    HID_KEY_C,
     0, // 22
     0, // 23
     0, // 24
     0, // 25
-    HID_KEY_B,
+    HID_KEY_V,
     0, // 27
     0, // 28
     0, // 29
     0, // 30
     0, // 31
     0, // 32
+    HID_KEY_B,
     HID_KEY_TAB,
     HID_KEY_ESCAPE,
     HID_KEY_SHIFT_LEFT,
@@ -44,7 +45,6 @@ uint8_t keycode_map_left[49] = {
     HID_KEY_GUI_LEFT,
     HID_KEY_ALT_LEFT,
     HID_KEY_SPACE,
-    HID_KEY_NONE,
     HID_KEY_NONE,
     HID_KEY_NONE,
     0, // 43
@@ -63,33 +63,33 @@ uint8_t keycode_map_left_fn[49] = {
     HID_KEY_F4,
     HID_KEY_F5,
     HID_KEY_F6,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
-    HID_KEY_NONE,
+    HID_KEY_NONE, // q
+    HID_KEY_ARROW_UP, // w
+    HID_KEY_NONE, // e
+    HID_KEY_NONE, // r
+    HID_KEY_NONE, // t
+    HID_KEY_ARROW_LEFT, // a
+    HID_KEY_ARROW_DOWN, // s
+    HID_KEY_ARROW_RIGHT, // d
+    HID_KEY_NONE, // f
+    HID_KEY_NONE, // g
+    HID_KEY_NONE, // z
+    HID_KEY_NONE, // x
     0, // 19
     0, // 20
-    HID_KEY_NONE,
+    HID_KEY_NONE, // c
     0, // 22
     0, // 23
     0, // 24
     0, // 25
-    HID_KEY_NONE,
+    HID_KEY_NONE, // v
     0, // 27
     0, // 28
     0, // 29
     0, // 30
     0, // 31
     0, // 32
-    HID_KEY_NONE,
+    HID_KEY_NONE, // b
     HID_KEY_CAPS_LOCK,
 };
 
