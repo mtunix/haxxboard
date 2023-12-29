@@ -37,29 +37,14 @@ void send_pressed_keys() {
 
     int fn_key_state = !gpio_get_level(FN_KEY_GPIO_NUM);
 
-    ESP_LOGI("send_pressed_keys", "Scanning keys =======");
-
-    for(auto && [gpio_num, hid_key]: key_map) {
-        ESP_LOGI("send_pressed_keys", "Scan loop");
+    for (auto&& [gpio_num, hid_key]: key_map) {
         if (pressed_keys_count >= 6) break;
 
         if (!gpio_get_level(gpio_num)) {
-
-            ESP_LOGI("send_pressed_keys", "Found a key: %d", gpio_num);
             pressed_keys[pressed_keys_count] = hid_key[fn_key_state];
             ++pressed_keys_count;
         }
     }
 
-    if (pressed_keys_count > 0) {
-        tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, pressed_keys.data());
-
-        ESP_LOGI("send_pressed_keys", "Sending some keys");
-    }
-    else {
-        tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, nullptr);
-
-        ESP_LOGI("send_pressed_keys", "sending no keys");
-    }
-
-}
+    tud_hid_keyboard_report(HID_ITF_PROTOCOL_KEYBOARD, 0, pressed_keys.data());
+}3333333333333333333333333333333333333335555555555555553
