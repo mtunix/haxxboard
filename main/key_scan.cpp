@@ -17,7 +17,7 @@ void init_gpio(const uint8_t gpio) {
 
     const gpio_config_t gpio_cfg = {
         .pin_bit_mask = BIT64(gpio),
-        .mode = GPIO_MODE_INPUT_OUTPUT,
+        .mode = GPIO_MODE_INPUT,
         .pull_up_en = GPIO_PULLUP_ENABLE,
         .pull_down_en = GPIO_PULLDOWN_DISABLE,
         .intr_type = GPIO_INTR_DISABLE,
@@ -35,7 +35,7 @@ void send_pressed_keys() {
     std::array<uint8_t, 6> pressed_keys{};
     uint8_t pressed_keys_count = 0;
 
-    int fn_key_state = gpio_get_level(FN_KEY_GPIO_NUM);
+    int fn_key_state = !gpio_get_level(FN_KEY_GPIO_NUM);
 
     ESP_LOGI("send_pressed_keys", "Scanning keys =======");
 
@@ -45,7 +45,7 @@ void send_pressed_keys() {
 
         if (!gpio_get_level(gpio_num)) {
 
-            ESP_LOGI("send_pressed_keys", "Found a key!");
+            ESP_LOGI("send_pressed_keys", "Found a key: %d", gpio_num);
             pressed_keys[pressed_keys_count] = hid_key[fn_key_state];
             ++pressed_keys_count;
         }
