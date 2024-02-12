@@ -19,14 +19,14 @@ positions_right = [[1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.25],
  [1.25, 2.25, 3.25, 4.25, 5.25, 6.875],
  [1.375, 2.625, 4.5, 6.875]];
 
-positions = positions_left;
+positions = positions_right;
 
 difference(){ 
-    cube([500, 500, 2.3]);
+    cube([500, 500, 1.3]);
     for(row=[0:len(positions)-1]) {
         for(col=[0:len(positions[row])-1]){
-            translate([positions[row][col]*19.05+50, 19.05*row+50, -0.1])
-                cube(14.5,14.5,2.5);
+            translate([positions[row][col]*19.05+175, 19.05*row+175, -0.1])
+                cube(14.1,14.1,10);
         }
     }
 }
