@@ -26,13 +26,11 @@ If you accidentally programmed the UART pins use the following key combination t
 
 Then flash.
 
-
-
 # TinyUSB Human Interface Device Example
 
 Human interface devices (HID) are one of the most common USB devices, it is implemented in various devices such as keyboards, mice, game controllers, sensors and alphanumeric display devices.
 In this example, we implement USB keyboard and mouse.
-Upon connection to USB host (PC), the example application will sent 'key a/A pressed & released' events and move mouse in a square trajectory. To send these HID reports again, press the BOOT button, that is present on most ESP development boards (GPIO0).
+Upon connection to USB host (PC), the example application will send 'key a/A pressed & released' events and move mouse in a square trajectory. To send these HID reports again, press the BOOT button, that is present on most ESP development boards (GPIO0).
 
 As a USB stack, a TinyUSB component is used.
 
@@ -49,6 +47,22 @@ _Note:_ In case your board doesn't have micro-USB connector connected to USB-OTG
 See common pin assignments for USB Device examples from [upper level](../../README.md#common-pin-assignments).
 
 Boot signal (GPIO0) is used to send HID reports to USB host.
+
+## Project setup
+1. Have ESP32
+2. Install `esp-idf`, follow the [official setup guide](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/get-started/linux-macos-setup.html), in short:
+   ```bash
+   sudo apt-get install git wget flex bison gperf python3 python3-venv cmake ninja-build ccache libffi-dev libssl-dev dfu-util libusb-1.0-0
+   git clone --recursive https://github.com/espressif/esp-idf.git
+   cd esp-idf
+   ./install.sh esp32
+   . ./export.sh
+   cd ..
+   ```
+3. The IDF requires certain paths, set by sourcing the `export.sh` script. Keep this in mind when opening a new terminal. An IDE like CLion can use that environment file as well.
+4. Add the current user to the `dialout` linux group (to access the serial port):
+    1. `sudo usermod -a -G dialout $USER`
+    2. reboot
 
 ### Build and Flash
 
