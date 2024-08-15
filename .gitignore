@@ -1,5 +1,6 @@
 esp-idf
 cmake-build-debug
+cmake-build-release
 build
 managed_components
 .idea
