@@ -16,7 +16,7 @@ extern "C" void app_main(void) {
     while (true) {
         if (usb_mounted()) {
             send_pressed_keys();
-            vTaskDelay(pdMS_TO_TICKS(100));
+            vTaskDelay(pdMS_TO_TICKS(10));
         }
     }
 }
