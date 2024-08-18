@@ -4,7 +4,8 @@
 #include <key_maps.h>
 
 uint8_t is_invalid_gpio(uint8_t gpio) {
-    return gpio == 19 // USB
+    return gpio == 1 || gpio==2 // touchpad i2c
+           || gpio == 19 // USB
            || gpio == 20 // USB
            || (gpio >= 22 && gpio <= 25) // Non-existent
            || (gpio >= 27 && gpio <= 32) // Non-existent

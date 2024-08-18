@@ -8,10 +8,14 @@
   </component>
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
+    <sourceRoots>
+      <file path="$PROJECT_DIR$" />
+    </sourceRoots>
     <excludeRoots>
       <file path="$PROJECT_DIR$/build" />
       <file path="$PROJECT_DIR$/esp-idf" />
       <file path="$PROJECT_DIR$/managed_components" />
+      <file path="$PROJECT_DIR$/venv" />
     </excludeRoots>
   </component>
 </project>
