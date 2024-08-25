@@ -25,10 +25,6 @@ constexpr uint8_t slave_addr = 0x2A;
 constexpr uint8_t write_mask = 0x80;
 constexpr uint8_t read_mask = 0xA0;
 
-// Cirque RAP read and write commands
-constexpr uint8_t write_cmd(slave_addr | write_mask);
-constexpr uint8_t read_cmd(slave_addr | read_mask);
-
 // Register config values for this demo
 constexpr uint8_t sysconfig_1_data = 0x00;
 constexpr uint8_t sysconfig_1_addr = 0x03;
@@ -49,6 +45,45 @@ constexpr uint16_t pinnacle_y_upper = 1471; // max "reachable" Y value
 constexpr uint16_t pinnacle_x_range = (pinnacle_x_upper - pinnacle_x_lower);
 constexpr uint16_t pinnacle_y_range = (pinnacle_y_upper - pinnacle_y_lower);
 
+
+uint8_t read_rap(i2c_master_dev_handle_t dev_handle, uint8_t address) {
+    const uint8_t read_cmd = address | read_mask;
+    esp_err_t ret = i2c_master_transmit(dev_handle, &read_cmd, 1, -1);
+
+    if (ret != ESP_OK) {
+        ESP_LOGE("I2C", "Failed to send read command with address: 0x%.2x", address);
+        return 0;
+    }
+
+    uint8_t data;
+    ret = i2c_master_receive(dev_handle, &data, 1, -1);
+
+    if (ret != ESP_OK) {
+        ESP_LOGE("I2C", "Failed to receive data from address: 0x%.2x", address);
+        return 0;
+    }
+
+    return data;
+}
+
+void write_rap(i2c_master_dev_handle_t dev_handle, uint8_t address, uint8_t data) {
+    const uint8_t write_cmd[2] = {static_cast<uint8_t>(address | write_mask), data};
+    const auto ret = i2c_master_transmit(dev_handle, write_cmd, 2, -1);
+    if (ret != ESP_OK) {
+        ESP_LOGE("I2C", "Failed to write RAP with address: 0x%.2x, data: 0x%.2x", address, data);
+    }
+}
+
+
+char *to_binary(uint8_t num) {
+    static char bin[9];
+    bin[8] = '\0';
+    for (int i = 7; i >= 0; i--) {
+        bin[i] = (num & 1) ? '1' : '0';
+        num >>= 1;
+    }
+    return bin;
+}
 
 extern "C" void app_main(void) {
     ESP_LOGI("General", "Hi from the start of main");
@@ -94,9 +129,40 @@ extern "C" void app_main(void) {
     // Using another random address (0x11) crashes, meaning that we see the cirque device above successfully 🥳
     // ESP_ERROR_CHECK(i2c_master_probe(bus_handle, 0x11, -1));
 
-    uint8_t data;
-    i2c_master_transmit(dev_handle, &read_cmd, 1, -1);
-    i2c_master_receive(dev_handle, &data, 1, -1);
+
+    // startup sequence of the pinnacle chip:
+    // 1. Power on Reset should be triggered (pull voltage jumper!)
+    // Now, hw data ready should be high?
+    hw_dr = gpio_get_level(dr_pin);
+    if (hw_dr == 0) {
+        ESP_LOGE("GPIO", "Error: DR pin is low after PoR");
+        return;
+    }
+    // 2. Host clears SW_CC (writes value 0x00 to Register 0x02, Status1), which clears HW_DR.
+    write_rap(dev_handle, 0x02, 0x00);
+    // now hd wr should be low??
+    hw_dr = gpio_get_level(dr_pin);
+    if (hw_dr == 1) {
+        ESP_LOGE("GPIO", "Error: DR pin is high after SW_CC clear");
+        return;
+    }
+
+    // Read back the same register
+    const uint8_t read_back_data = read_rap(dev_handle, 0x02);
+
+    // Check if the value is set
+    if (read_back_data != 0x00) {
+        ESP_LOGE("I2C", "Error: Register value not set correctly");
+        return;
+    }
+
+
+    ESP_LOGI("DATA", " === READING REGISTERS ===");
+    for (uint8_t reg = 0x00; reg < 0x18; reg++) {
+        ESP_LOGI("DATA", "Reading register %#.2x:", reg);
+        const uint8_t data = read_rap(dev_handle, reg);
+        ESP_LOGI("DATA", " result: %s", to_binary(data));
+    }
 
 
     ESP_LOGI("General", "returning");
