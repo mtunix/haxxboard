@@ -29,9 +29,6 @@ extern "C" [[noreturn]] void app_main(void) {
     const TouchPad touch_pad{sda_pin, scl_pin, dr_pin};
 
     while (true) {
-
-    }
-    while (true) {
         if (const auto touch_data = touch_pad.get_data()) {
             ESP_LOGI("loop", "got data");
             ESP_LOGI("loop", "x: %d", touch_data->x);

@@ -66,7 +66,7 @@ TouchPad::TouchPad(const gpio_num_t sda_pin, const gpio_num_t scl_pin,
     // 2. Host clears SW_CC (writes value 0x00 Status1 register), which clears HW_DR.
     write_rap(status_1_addr, 0x00);
 
-    if (!gpio_get_level(_data_ready_pin)) {
+    if (gpio_get_level(_data_ready_pin)) {
         ESP_LOGE("GPIO", "Error: DR pin is high after SW_CC clear");
     }
     // enable feed and absolute value reporting
