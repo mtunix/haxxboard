@@ -10,33 +10,15 @@
 #include <sys/stat.h>
 
 
-// cirque sample adapted from https://github.com/cirque-corp/Cirque_Pinnacle_1CA027/blob/master/Circular_Trackpad/Single_Pad_Sample_Code/I2C_FlatOverlay_USBMouse/I2C_FlatOverlay_USBMouse.ino
-constexpr gpio_num_t sda_pin = GPIO_NUM_2;
-constexpr gpio_num_t scl_pin = GPIO_NUM_1;
-constexpr gpio_num_t dr_pin = GPIO_NUM_3;
 
-// Coordinate scaling values
-constexpr uint16_t pinnacle_xmax = 2047; // max value Pinnacle can report for X
-constexpr uint16_t pinnacle_ymax = 1535; // max value Pinnacle can report for Y
-constexpr uint16_t pinnacle_x_lower = 127; // min "reachable" X value
-constexpr uint16_t pinnacle_x_upper = 1919; // max "reachable" X value
-constexpr uint16_t pinnacle_y_lower = 63; // min "reachable" Y value
-constexpr uint16_t pinnacle_y_upper = 1471; // max "reachable" Y value
-constexpr uint16_t pinnacle_x_range = (pinnacle_x_upper - pinnacle_x_lower);
-constexpr uint16_t pinnacle_y_range = (pinnacle_y_upper - pinnacle_y_lower);
-
-/* Actually measured min and max values
- * xmin: 128
- * xmax: 2047
- * ymin: 0
- * ymax: 1519
- */
-
+constexpr gpio_num_t touchpad_sda_pin = GPIO_NUM_2;
+constexpr gpio_num_t touchpad_scl_pin = GPIO_NUM_1;
+constexpr gpio_num_t touchpad_data_ready_pin = GPIO_NUM_3;
 
 extern "C" void app_main(void) {
     ESP_LOGI("General", "Hi from the start of main");
 
-    const TouchPad touch_pad{sda_pin, scl_pin, dr_pin};
+    const TouchPad touch_pad{touchpad_sda_pin, touchpad_scl_pin, touchpad_data_ready_pin};
 
     uint16_t xmin = std::numeric_limits<uint16_t>::max(), xmax = 0;
     uint16_t ymin = std::numeric_limits<uint16_t>::max(), ymax = 0;
