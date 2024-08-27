@@ -5,11 +5,9 @@
 extern "C" void app_main(void) {
     ESP_LOGI("General", "Hi from the start of main");
     MouseController mouse_controller;
-
-    mouse_controller.tick();
-    mouse_controller.tick();
-    mouse_controller.tick();
-    mouse_controller.tick();
+    while (true) {
+        mouse_controller.tick();
+    }
     ESP_LOGI("General", "End of main");
 }
 

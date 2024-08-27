@@ -3,6 +3,9 @@
 
 void MouseController::tick() {
     (this->*_current_state_function)();
+    if (const auto data = _touch_pad.get_data()) {
+        ESP_LOGI("StateMachine", "got data: %d", data->z);
+    }
 }
 
 void MouseController::idle() {
