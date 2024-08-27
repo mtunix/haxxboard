@@ -1,5 +1,7 @@
 #include <cirque_pinnacle.h>
 #include <led_strip.h>
+#include <limits>
+
 #include "esp_log.h"
 #include "led.h"
 #include "usb.h"
@@ -23,19 +25,34 @@ constexpr uint16_t pinnacle_x_range = (pinnacle_x_upper - pinnacle_x_lower);
 constexpr uint16_t pinnacle_y_range = (pinnacle_y_upper - pinnacle_y_lower);
 
 
-extern "C" [[noreturn]] void app_main(void) {
+extern "C" void app_main(void) {
     ESP_LOGI("General", "Hi from the start of main");
 
     const TouchPad touch_pad{sda_pin, scl_pin, dr_pin};
 
-    while (true) {
+    uint16_t xmin = std::numeric_limits<uint16_t>::max(), xmax = 0;
+    uint16_t ymin = std::numeric_limits<uint16_t>::max(), ymax = 0;
+
+    int samples_left = 10000;
+    while (samples_left > 0) {
         if (const auto touch_data = touch_pad.get_data()) {
-            ESP_LOGI("loop", "got data");
-            ESP_LOGI("loop", "x: %d", touch_data->x);
-            ESP_LOGI("loop", "y: %d", touch_data->y);
-            ESP_LOGI("loop", "z: %d", touch_data->z);
+            if (touch_data->z == 0) {
+                continue;
+            }
+
+            xmin = std::min(xmin, touch_data->x);
+            xmax = std::max(xmax, touch_data->x);
+            ymin = std::min(ymin, touch_data->y);
+            ymax = std::max(ymax, touch_data->y);
+            ESP_LOGI("loop", "samples left: %d", samples_left);
+            --samples_left;
         }
     }
+
+    ESP_LOGI("General", "xmin: %d", xmin);
+    ESP_LOGI("General", "xmax: %d", xmax);
+    ESP_LOGI("General", "ymin: %d", ymin);
+    ESP_LOGI("General", "ymax: %d", ymax);
 
     ESP_LOGI("General", "End of main");
 }
