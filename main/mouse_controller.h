@@ -23,5 +23,5 @@ private:
 
     void tracking();
 
-    decltype(&MouseController::idle) _current_state_function{&MouseController::idle};
+    void (MouseController::*_current_state_function)(){&MouseController::idle};
 };
