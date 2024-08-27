@@ -9,6 +9,11 @@ constexpr gpio_num_t touchpad_data_ready_pin = GPIO_NUM_3;
 
 
 class MouseController {
+public:
+    MouseController() = default;
+
+    void tick();
+
 private:
     TouchPad _touch_pad{touchpad_sda_pin, touchpad_scl_pin, touchpad_data_ready_pin};
 
@@ -18,9 +23,5 @@ private:
 
     void tracking();
 
-public:
-    MouseController() = default;
-
-    using StateFunction = decltype(&MouseController::idle);
-    StateFunction tick{&MouseController::idle};
+    decltype(&MouseController::idle) _current_state_function{&MouseController::idle};
 };
