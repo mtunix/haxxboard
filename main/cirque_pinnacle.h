@@ -1,7 +1,6 @@
 #pragma once
 
 #include <optional>
-#include <array>
 
 #include "driver/i2c_master.h"
 

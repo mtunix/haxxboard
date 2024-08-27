@@ -1,8 +1,8 @@
+#include <array>
+#include <esp_log.h>
+#include "driver/gpio.h"
 #include "cirque_pinnacle.h"
 
-#include <esp_log.h>
-
-#include "driver/gpio.h"
 
 namespace {
     // Masks for Cirque Register Access Protocol (RAP)

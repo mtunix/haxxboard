@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cirque_pinnacle.h>
 #include <led_strip.h>
 #include <limits>
@@ -23,6 +24,13 @@ constexpr uint16_t pinnacle_y_lower = 63; // min "reachable" Y value
 constexpr uint16_t pinnacle_y_upper = 1471; // max "reachable" Y value
 constexpr uint16_t pinnacle_x_range = (pinnacle_x_upper - pinnacle_x_lower);
 constexpr uint16_t pinnacle_y_range = (pinnacle_y_upper - pinnacle_y_lower);
+
+/* Actually measured min and max values
+ * xmin: 128
+ * xmax: 2047
+ * ymin: 0
+ * ymax: 1519
+ */
 
 
 extern "C" void app_main(void) {
