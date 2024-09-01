@@ -1,20 +1,19 @@
 #include "mouse_controller.h"
 #include "esp_log.h"
 
-
-std::unique_ptr<State> Idle::update(Movement movement) {
+StateUpdater idle(const Movement &movement) {
     ESP_LOGI("StateMachine", "Hi from idle");
-    return std::make_unique<InitialTouch>();
+    return &initial_touch;
 }
 
-std::unique_ptr<State> InitialTouch::update(Movement movement) {
+StateUpdater initial_touch(const Movement &movement) {
     ESP_LOGI("StateMachine", "Hi from initial touch");
-    return std::make_unique<Tracking>();
+    return &tracking;
 }
 
-std::unique_ptr<State> Tracking::update(Movement movement) {
+StateUpdater tracking(const Movement &movement) {
     ESP_LOGI("StateMachine", "Hi from tracking");
-    return std::make_unique<Idle>();
+    return &idle;
 }
 
 void MouseController::tick() {
@@ -22,6 +21,6 @@ void MouseController::tick() {
         ESP_LOGI("StateMachine", "got data: %d", data->z);
         _latest_movement.from = _latest_movement.to;
         _latest_movement.to = data.value();
-        _current_state = _current_state->update(_latest_movement);
+        _state_updater = _state_updater(_latest_movement);
     }
 }

@@ -4,6 +4,7 @@
 #include <functional>
 #include <memory>
 
+
 constexpr gpio_num_t touchpad_sda_pin = GPIO_NUM_2;
 constexpr gpio_num_t touchpad_scl_pin = GPIO_NUM_1;
 constexpr gpio_num_t touchpad_data_ready_pin = GPIO_NUM_3;
@@ -12,23 +13,25 @@ struct Movement {
     TouchData from, to;
 };
 
-struct State {
-    virtual ~State() = default;
+// https://stackoverflow.com/questions/23737449/recursive-typedef-function-definition-stdfunction-returning-its-own-type
+template<typename... T>
+struct FunctionReturningOwnTypeHelper {
+    typedef std::function<FunctionReturningOwnTypeHelper(T...)> type;
 
-    virtual std::unique_ptr<State> update(Movement movement) = 0;
+    FunctionReturningOwnTypeHelper(type f) : func(f) {
+    }
+
+    operator type() { return func; }
+    type func;
 };
 
-struct Idle final : State {
-    std::unique_ptr<State> update(Movement movement) override;
-};
+typedef FunctionReturningOwnTypeHelper<Movement &>::type StateUpdater;
 
-struct InitialTouch final : State {
-    std::unique_ptr<State> update(Movement movement) override;
-};
+StateUpdater idle(const Movement &movement);
 
-struct Tracking final : State {
-    std::unique_ptr<State> update(Movement movement) override;
-};
+StateUpdater initial_touch(const Movement &movement);
+
+StateUpdater tracking(const Movement &movement);
 
 class MouseController {
 public:
@@ -38,6 +41,6 @@ public:
 
 private:
     TouchPad _touch_pad{touchpad_sda_pin, touchpad_scl_pin, touchpad_data_ready_pin};
-    std::unique_ptr<State> _current_state{std::make_unique<Idle>()};
+    StateUpdater _state_updater{&idle};
     Movement _latest_movement{};
 };
