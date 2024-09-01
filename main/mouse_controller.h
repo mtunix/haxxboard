@@ -2,8 +2,6 @@
 
 #include "cirque_pinnacle.h"
 #include <functional>
-#include <memory>
-
 
 constexpr gpio_num_t touchpad_sda_pin = GPIO_NUM_2;
 constexpr gpio_num_t touchpad_scl_pin = GPIO_NUM_1;
