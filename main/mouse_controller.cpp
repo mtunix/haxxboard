@@ -1,9 +1,35 @@
 #include "mouse_controller.h"
 #include "esp_log.h"
 
+enum class MovementKind {
+    touch_down,
+    lift_off,
+    stay_off,
+    same_position,
+    new_position
+};
+
+namespace {
+    MovementKind movement_to_kind(const Movement &movement) {
+        if (movement.from.z == 0 and movement.to.z == 0) {
+            return MovementKind::stay_off;
+        }
+
+        if(movement.from.z == 0 and movement.to.z > 0) {
+            return MovementKind::touch_down;
+        }
+
+
+        if(movement.from.z > 0 and movement.to.z == 0) {
+            return MovementKind::lift_off;
+        }
+    }
+}
+
 StateUpdater idle(const Movement &movement) {
     ESP_LOGI("StateMachine", "Hi from idle");
-    return &initial_touch;
+    if (movement)
+        return &initial_touch;
 }
 
 StateUpdater initial_touch(const Movement &movement) {
