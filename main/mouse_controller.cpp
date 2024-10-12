@@ -103,7 +103,7 @@ std::unique_ptr<State> Tracking::transition(const TouchData &current_touch) {
 
 void MouseController::tick() {
     if (const auto data = _touch_pad.get_data()) {
-        //ESP_LOGI("State Machine", "got data: x y z %d %d %d", data->x, data->y, data->z);
+        ESP_LOGI("State Machine", "got data: x y z %d %d %d", data->x, data->y, data->z);
         _state = _state->transition(data.value());
     }
 }
