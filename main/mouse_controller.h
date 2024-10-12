@@ -44,5 +44,5 @@ public:
 
 private:
     TouchPad _touch_pad{touchpad_sda_pin, touchpad_scl_pin, touchpad_data_ready_pin};
-    std::unique_ptr<State> _state;
+    std::unique_ptr<State> _state{std::make_unique<Idle>(TouchData{0, 0, 0})};
 };
