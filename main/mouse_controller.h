@@ -6,26 +6,34 @@ constexpr gpio_num_t touchpad_sda_pin = GPIO_NUM_2;
 constexpr gpio_num_t touchpad_scl_pin = GPIO_NUM_1;
 constexpr gpio_num_t touchpad_data_ready_pin = GPIO_NUM_3;
 
+
+// inheritance based state machine is slightly ugly syntax wise
+// at least it is easy to pass touch history around the states
+// glide mode can also capture its past momentum
+
 struct State {
     virtual ~State() = default;
+
+    State() = delete;
 
     virtual std::unique_ptr<State> transition(const TouchData &current_touch) = 0;
 
     TouchData _last_touch;
+
+    explicit State(const TouchData &last_touch): _last_touch(last_touch) {
+    }
 };
 
 struct Idle final : State {
+    using State::State;
+
     std::unique_ptr<State> transition(const TouchData &current_touch) override;
 };
 
 struct Tracking final : State {
-    std::unique_ptr<State> transition(const TouchData &current_touch) override;
-};
+    using State::State;
 
-struct Glide final : State {
     std::unique_ptr<State> transition(const TouchData &current_touch) override;
-
-    float vx, vy;
 };
 
 class MouseController {

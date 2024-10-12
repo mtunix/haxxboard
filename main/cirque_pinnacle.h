@@ -1,6 +1,5 @@
 #pragma once
 
-#include <mouse_controller.h>
 #include <optional>
 
 #include "driver/i2c_master.h"
