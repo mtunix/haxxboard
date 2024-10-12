@@ -1,12 +1,15 @@
 #include "esp_log.h"
+#include "usb.h"
 
 #include "mouse_controller.h"
 
 extern "C" void app_main(void) {
+    init_usb();
     ESP_LOGI("General", "Hi from the start of main");
     MouseController mouse_controller;
     while (true) {
-        mouse_controller.tick();
+        if (usb_mounted())
+            mouse_controller.tick();
     }
     ESP_LOGI("General", "End of main");
 }

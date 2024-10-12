@@ -44,6 +44,7 @@ namespace {
 
 
 std::unique_ptr<State> Idle::transition(const TouchData &current_touch) {
+    ESP_LOGI("State Machine", "Idle transition");
     switch (movement_to_kind(_last_touch, current_touch)) {
         case MovementKind::stay_off:
             ESP_LOGI("State Machine", "Idle stay off");
@@ -65,6 +66,7 @@ std::unique_ptr<State> Idle::transition(const TouchData &current_touch) {
 }
 
 std::unique_ptr<State> Tracking::transition(const TouchData &current_touch) {
+    ESP_LOGI("State Machine", "Tracking transition");
     switch (movement_to_kind(_last_touch, current_touch)) {
         case MovementKind::stay_off:
             ESP_LOGE("State Machine", "Tracking state machine got stay_off, impossible!");
@@ -88,9 +90,10 @@ std::unique_ptr<State> Tracking::transition(const TouchData &current_touch) {
             const int8_t dy_clamped = static_cast<int8_t>(std::clamp(
                 dy, static_cast<int>(std::numeric_limits<int8_t>::min()),
                 static_cast<int>(std::numeric_limits<int8_t>::max())));
-
+            ESP_LOGI("State Machine", "sending mouse report: %d %d", dx, dy);
             tud_hid_mouse_report(HID_ITF_PROTOCOL_MOUSE, 0x00, dx_clamped, dy_clamped, 0, 0);
-            return std::unique_ptr<State>(this);
+            ESP_LOGI("State Machine", "mouse report sent");
+            return std::make_unique<Tracking>(current_touch);
     }
     ESP_LOGI("State Machine", "Tracking impossible state");
     return nullptr; // this shouldn't happen
