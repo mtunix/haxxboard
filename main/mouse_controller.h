@@ -14,15 +14,27 @@ constexpr gpio_num_t touchpad_data_ready_pin = GPIO_NUM_3;
 struct State {
     virtual ~State() = default;
 
-    State() = default;
+    State() = delete;
 
     virtual std::unique_ptr<State> transition(const TouchData &current_touch) = 0;
+
+    TouchData _last_touch;
+
+    explicit State(const TouchData &last_touch): _last_touch(last_touch) {
+    }
 };
 
 struct Idle final : State {
+    using State::State;
+
     std::unique_ptr<State> transition(const TouchData &current_touch) override;
 };
 
+struct Tracking final : State {
+    using State::State;
+
+    std::unique_ptr<State> transition(const TouchData &current_touch) override;
+};
 
 class MouseController {
 public:
