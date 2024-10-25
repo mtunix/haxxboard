@@ -16,12 +16,12 @@ struct State {
 
     State() = delete;
 
+    explicit State(const TouchData &last_touch): _last_touch(last_touch) {
+    }
+
     virtual std::unique_ptr<State> transition(const TouchData &current_touch) = 0;
 
     TouchData _last_touch;
-
-    explicit State(const TouchData &last_touch): _last_touch(last_touch) {
-    }
 };
 
 struct Idle final : State {
@@ -31,9 +31,12 @@ struct Idle final : State {
 };
 
 struct Tracking final : State {
-    using State::State;
+    explicit Tracking(const TouchData &last_touch, const int dx, const int dy): State(last_touch), _dx(dx), _dy(dy) {
+    }
 
     std::unique_ptr<State> transition(const TouchData &current_touch) override;
+
+    int _dx, _dy;
 };
 
 class MouseController {
