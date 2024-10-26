@@ -1,9 +1,8 @@
-#include <projdefs.h>
-
 #include "esp_log.h"
 #include "usb.h"
 #include "key_scan.h"
-#include "task.h"
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include "mouse_controller.h"
 

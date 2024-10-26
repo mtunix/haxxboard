@@ -8,8 +8,7 @@ constexpr gpio_num_t FN_KEY_GPIO_NUM = GPIO_NUM_48;
 
 static const std::unordered_map<gpio_num_t, std::array<int, 2>> key_map = {
     {GPIO_NUM_0, {HID_KEY_X, HID_KEY_NONE}}, // gpio 0 is also the boot strapping key, wired to the boot button on the esp32 s3 devkit m
-    // 0 - 2 Joystick (VCC / X / Y ADC pins)
-    {GPIO_NUM_3, {HID_KEY_GRAVE, HID_KEY_NONE}},
+    // 1 - 3 Cirque (SDA / SCL / DR pins)
     {GPIO_NUM_4, {HID_KEY_1, HID_KEY_F1}},
     {GPIO_NUM_5, {HID_KEY_2, HID_KEY_F2}},
     {GPIO_NUM_6, {HID_KEY_3, HID_KEY_F3}},
